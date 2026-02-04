@@ -19,7 +19,6 @@ export function LoginPage() {
   const [error, setError] = useState<string | null>(null)
 
   const setAuth = useAuthStore((state) => state.setAuth)
-  const hydrateFromStorage = useAuthStore((state) => state.hydrateFromStorage)
 
   const navigate = useNavigate()
   const location = useLocation() as { state?: { from?: Location } }
@@ -30,8 +29,13 @@ export function LoginPage() {
     setIsSubmitting(true)
 
     try {
-      const response = await authService.login({ username, password })
-      setAuth(response.data)
+      const response = await authService.login({ username, password });
+      const data = response.data.data;
+
+      setAuth({
+        accessToken: data.accessToken,
+        user: data.user,
+      })
 
       const redirectTo = location.state?.from?.pathname ?? '/'
       navigate(redirectTo, { replace: true })
@@ -42,11 +46,6 @@ export function LoginPage() {
       setIsSubmitting(false)
     }
   }
-
-  // Hydrate existing auth from storage on first render in a safe way
-  useState(() => {
-    hydrateFromStorage()
-  })
 
   return (
     <Box
