@@ -13,11 +13,11 @@ export interface LoginResponse {
 
 class AuthService extends BaseService {
   constructor() {
-    super('/api') // adjust base URL when backend is ready
+    super(`/auth`) // adjust base URL when backend is ready
   }
 
   login(payload: LoginRequest) {
-    return this.post<LoginResponse, LoginRequest>('/auth/login', payload)
+    return this.post<LoginResponse, LoginRequest>('/login', payload)
   }
 }
 

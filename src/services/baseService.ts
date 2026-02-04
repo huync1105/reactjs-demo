@@ -5,9 +5,7 @@ export class BaseService {
   protected client: AxiosInstance
 
   constructor(baseURL: string) {
-    this.client = axios.create({
-      baseURL,
-    })
+    this.client = axios.create({ baseURL: `${import.meta.env.VITE_API_BASE_URL}${baseURL}` });
 
     this.client.interceptors.request.use((config) => {
       const token = useAuthStore.getState().accessToken
